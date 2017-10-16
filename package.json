@@ -1,0 +1,19 @@
+{
+  "name": "sk-rxjs-learn",
+  "version": "1.0.0",
+  "description": "learn rxjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Noah Sun",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "rxjs": "^5.4.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.2.13",
+    "@types/node": "^8.0.34"
+  }
+}
