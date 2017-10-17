@@ -18,7 +18,8 @@
             true,
             "ban-single-arg-parens"
         ],
-        "no-var-requires": false
+        "no-var-requires": false,
+        "ban-types": false
     },
     "rulesDirectory": []
 }
