@@ -14,8 +14,8 @@
     "rxjs": "^5.4.3"
   },
   "devDependencies": {
-    "@types/jquery": "^3.2.13",
-    "@types/node": "^8.0.34",
+    "@types/jquery": "^3.2.14",
+    "@types/node": "^8.0.41",
     "@types/rsvp": "^4.0.0"
   }
 }
