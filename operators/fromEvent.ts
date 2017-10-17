@@ -1,6 +1,6 @@
 /**
  * 将一个元素上的时间转化为一个Observable
- * 
+ *
  * //!注意:使用jQuery,Zepto,Backbone,Marionette,AngularJS和Ember.js的库方法,并且如果不存在,则退回到本地绑定.
  * //!     如果你使用AMD,你可能需要将这些库作为RxJS的依赖关系包括在requirejs配置文件中.当决定使用哪个库时,RxJS将尝试检测它们的存在
  */
