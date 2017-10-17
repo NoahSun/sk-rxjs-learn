@@ -13,7 +13,12 @@
         "no-console": false,
         "object-literal-sort-keys": false,
         "no-reference": false,
-        "ordered-imports": false
+        "ordered-imports": false,
+        "arrow-parens": [
+            true,
+            "ban-single-arg-parens"
+        ],
+        "no-var-requires": false
     },
     "rulesDirectory": []
 }
