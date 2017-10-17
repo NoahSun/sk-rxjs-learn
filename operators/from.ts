@@ -3,6 +3,7 @@
  */
 
 import { Observable } from 'rxjs';
+import { IteratorObservable } from 'rxjs/observable/IteratorObservable';
 
 // 数组
 const array = [1, 2, 3];
@@ -19,12 +20,14 @@ function* genterateDoubles(seed) {
 }
 
 const iterator = genterateDoubles(3);
-const resultItr = Observable.from(iterator as any).take(3);
+// 使用迭代器可观察对象来创建实例
+const resultItr = IteratorObservable.create(iterator).take(3);
 resultItr.subscribe(x => console.log(x));
 
 // Set
-const s = new Set(['foo', window]);
-Observable.from(s as any).subscribe(
+const s = new Set(['foo', 1]);
+// 使用迭代器可观察对象来创建实例
+IteratorObservable.create(s).subscribe(
     x => console.log(`onNext: ${x}`),
     e => console.log(`onError: ${e}`),
     () => console.log('onCompleted'),
