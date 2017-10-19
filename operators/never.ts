@@ -14,4 +14,12 @@ function info() {
 }
 
 const result = Observable.never().startWith(7);
-const subscription = result.subscribe(x => console.log(x), info, info);
+result.subscribe(x => console.log(x), info, info);
+
+// 不会产生任何的值,因此绝不会调用任何的回调函数
+const source = Observable.never();
+const subscription = source.subscribe(
+    x => console.log(x),
+    e => console.log(e),
+    () => console.log('done'),
+);
