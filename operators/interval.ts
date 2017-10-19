@@ -6,11 +6,11 @@
 
 import { Observable } from 'rxjs';
 
-// const numbers = Observable.interval(1000).map((value, index) => {
-//     return { value, index };
-// });
+const numbers = Observable.interval(1000).map((value, index) => {
+    return { value, index };
+});
 
-// numbers.subscribe(x => console.log(x));
+numbers.subscribe(x => console.log(x));
 
 const source = Observable.interval(500).timeInterval().take(3);
 const subscription = source.subscribe(
