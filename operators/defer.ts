@@ -2,7 +2,7 @@
  * 参数为一个Observable的工厂函数,当被订阅时工厂函数被调用,产生一个可观察对象.
  * defer允许你尽在Observer订阅时创建Observable,并为每个Observer创建一个新的Observabel.
  * 它等待一个Observer订阅它,然后它生成一个Observable,通常有一个Observable工厂函数.
- * 它为每一个用户分别产生一个Observable,所以虽然每个用户可能认为它们是订阅的同一个Observable,但事实上每个订阅者都有自己的单独的Observable
+ * 它为每一个订阅者分别重新初始化一个Observable,所以虽然每个用户可能认为它们是订阅的同一个Observable,但事实上每个订阅者都有自己的单独的Observable
  */
 
 import { Observable } from 'rxjs';
