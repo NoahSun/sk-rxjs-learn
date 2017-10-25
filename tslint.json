@@ -19,7 +19,10 @@
             "ban-single-arg-parens"
         ],
         "no-var-requires": false,
-        "ban-types": false
+        "ban-types": false,
+        "max-classes-per-file": true,
+        "no-empty": false,
+        "no-shadowed-variable": false
     },
     "rulesDirectory": []
 }
