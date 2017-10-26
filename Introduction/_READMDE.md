@@ -16,6 +16,7 @@ ReactiveX 结合了 [观察者模式](https://en.wikipedia.org/wiki/Observer_pat
 * **Schedulers (调度器):** 用来控制并发并且是中央集权的调度员, 允许我们在发生计算时进行协调, 例如 `setTimeout` 或 `requestAnimationFrame` 或 `其他`.
 
 ## 第一个示例
+
 ---
 
 注册时间监听器的常规写法.
