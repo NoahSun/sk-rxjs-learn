@@ -34,4 +34,25 @@ Rx.Observable.fromEvent(button. 'click')
     .subscribe(e => console.log('Clicked!'));
 ```
 
-...未完...
+## 纯净性(Purity)
+
+使得 RxJS 强大的正是它使用纯函数来产生值的能力. 这意味着你的代码更不容易出错.
+
+通常你会创建一个非纯函数, 这个函数之外也使用了共享变量的代码会把你的应用状态搞得一团糟.
+
+```javascript
+var count = 0;
+var button = document.querySelector('button');
+button.addEventListener('click', () => console.log(`Clicked ${++count} times`));
+```
+
+使用 RxJS 的话, 你将可以把应用状态隔离出来.
+
+```javascript
+var button = document.querySelector('button');
+Rx.Observable.fromEvent(button, 'click')
+    .scan(count => count + 1, 0)
+    .subscribe(count => console.log(`Clicked ${count} times`));
+```
+
+**scan** 操作符的工作原理与数组的 **reduce** 类似. 它需要一个暴露给回调函数当参数的初始值. 每次回调函数运行后的返回值会作为下次回调函数运行时的参数.
