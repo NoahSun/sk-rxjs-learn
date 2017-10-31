@@ -116,7 +116,7 @@ button.addEventListener('click', e => {
 
 ```javascript
 var button = document.querySelector('button');
-Rx.Observable.fromEvent(button, 'clicl')
+Rx.Observable.fromEvent(button, 'click')
     .throttleTime(1000)
     .map(e => e.clientX)
     .scan((count, clientX) => count + clientX, 0)
