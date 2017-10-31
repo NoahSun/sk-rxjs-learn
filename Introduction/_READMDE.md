@@ -58,3 +58,69 @@ Rx.Observable.fromEvent(button, 'click')
 ```
 
 **scan** 操作符的工作原理与数组的 **reduce** 类似. 它需要一个暴露给回调函数当参数的初始值. 每次回调函数运行后的返回值会作为下次回调函数运行时的参数.
+
+## 流动性(Flow)
+
+RxJS 提供了一整套操作符来帮助你控制事件如何流经 Observables.
+
+下面的代码展示的是如何控制一秒内最多点击一次, 先来看使用普通的 JavaScript:
+
+```javascript
+var count = 0;
+var rate = 1000;
+var lastClick = Data.now() - rate;
+var button = document.querySelector('button');
+button.addEventListener('click', () => {
+    if(Date.now() - lastClick >= rate) {
+        console.log(`Clicked ${++count} times`);
+        lastClick = Data.now();
+    }
+});
+```
+
+使用 RxJS:
+
+```javascript
+var button = document.querySelector('button');
+Rx.Observable.fromEvent(button, 'click')
+    .throttleTime(1000)
+    .scan(count => count + 1, 0)
+    .subscribe(count => console.log(`Clicked ${count} times`));
+```
+
+其他流程控制操作符有 `.filter`, `.delay`, `.debounceTime`, `.take`, `.takeUtil`, `.distinct`, `.distinctUntilChanged` 等等.
+
+## 值(Values)
+
+---
+
+对于流经 Observables 的值, 你可以对其进行转换.
+
+下面的代码展示的是如何累加每次点击的鼠标 x 坐标, 先来看看使用普通的 JavaScript:
+
+```javascript
+var count = 0;
+var rate = 1000;
+var lastClick = Date.now() - rate;
+var button = document.querySelector('button')l
+button.addEventListener('click', e => {
+    if(Date.now() - lastClick >= rate) {
+        count += e.clientX;
+        console.log(count);
+        lastClick = Date.now();
+    }
+});
+```
+
+使用 RxJS:
+
+```javascript
+var button = document.querySelector('button');
+Rx.Observable.fromEvent(button, 'clicl')
+    .throttleTime(1000)
+    .map(e => e.clientX)
+    .scan((count, clientX) => count + clientX, 0)
+    .subcribe(sum => console.log(sum));
+```
+
+其他产生值的操作符有 `.pluck`, `.pairwise`, `sample` 等等.
