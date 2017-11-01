@@ -1,4 +1,6 @@
-# 入门
+# 概览
+
+## 入门
 
 RxJS是一个库, 它通过使用可观察的序列来编写异步和基于事件的程序. 它提供了一个核心类型 [Observable](#Observable), 附属类型(Observer, Schedulers, Subjects) 和受Array附属方法的启发的操作符(`.map`, `.filter`, `.reduce`, `.every`, 等),这些数组操作符可以把异步事件作为集合来处理.
 
@@ -15,7 +17,7 @@ ReactiveX 结合了 [观察者模式](https://en.wikipedia.org/wiki/Observer_pat
 * **Subject (主题):** **相当于 `EventEmitter`, 并且是将值或事件`多路推送`给多个 Observer 的`唯一方式`**.
 * **Schedulers (调度器):** 用来控制并发并且是中央集权的调度员, 允许我们在发生计算时进行协调, 例如 `setTimeout` 或 `requestAnimationFrame` 或 `其他`.
 
-## 第一个示例
+### 第一个示例
 
 ---
 
@@ -34,7 +36,7 @@ Rx.Observable.fromEvent(button. 'click')
     .subscribe(e => console.log('Clicked!'));
 ```
 
-## 纯净性(Purity)
+### 纯净性(Purity)
 
 ---
 
@@ -59,7 +61,7 @@ Rx.Observable.fromEvent(button, 'click')
 
 **scan** 操作符的工作原理与数组的 **reduce** 类似. 它需要一个暴露给回调函数当参数的初始值. 每次回调函数运行后的返回值会作为下次回调函数运行时的参数.
 
-## 流动性(Flow)
+### 流动性(Flow)
 
 RxJS 提供了一整套操作符来帮助你控制事件如何流经 Observables.
 
@@ -90,7 +92,7 @@ Rx.Observable.fromEvent(button, 'click')
 
 其他流程控制操作符有 `.filter`, `.delay`, `.debounceTime`, `.take`, `.takeUtil`, `.distinct`, `.distinctUntilChanged` 等等.
 
-## 值(Values)
+### 值(Values)
 
 ---
 
@@ -124,3 +126,16 @@ Rx.Observable.fromEvent(button, 'click')
 ```
 
 其他产生值的操作符有 `.pluck`, `.pairwise`, `sample` 等等.
+
+## Observable (可观察对象)
+
+---
+
+Observable 是多个值的惰性推送集合. 它填补了下面表格中的空白:
+
+|      | 单个值                                                                                                  | 多个值                                                                                            |
+| ---- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 拉取 | [Function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Functions)                     | [Iterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols) |
+| 推送 | [Promise](https://developer.mozilla.org/zh-CN/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise) | [Obsevable](http://cn.rx.js.org/class/es6/Observable.js~Observable.html)                          |
+
+未完...
