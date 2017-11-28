@@ -138,4 +138,9 @@ Observable 是多个值的惰性推送集合. 它填补了下面表格中的空�
 | 拉取 | [Function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Functions)                     | [Iterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols) |
 | 推送 | [Promise](https://developer.mozilla.org/zh-CN/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise) | [Obsevable](http://cn.rx.js.org/class/es6/Observable.js~Observable.html)                          |
 
+**什么是推送？** - 在推送体系中, 由生产者来决定何时把数据发送给消费者. 消费者本身不知道合适会接收到数据.
+
+在当今的 JavaScript 世界中, Promises是最常见的推送体系类型.
+Promise(生产者)
+
 未完...
