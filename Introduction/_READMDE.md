@@ -140,7 +140,193 @@ Observable 是多个值的惰性推送集合. 它填补了下面表格中的空�
 
 **什么是推送？** - 在推送体系中, 由生产者来决定何时把数据发送给消费者. 消费者本身不知道合适会接收到数据.
 
-在当今的 JavaScript 世界中, Promises是最常见的推送体系类型.
-Promise(生产者)
+在当今的 JavaScript 世界中, Promises 是最常见的推送体系类型.
+Promise(生产者)将一个解析过的值传递给已注册的回调函数(消费者),但不同于函数的是,由 Promise 来决定何时把值"推送"给回调函数.
+
+RxJS 引入了 Observables, 一个新的 JavaScript 推送体系. Observable 是多个值的生产者, 并将值"推送"给观察者(消费者).
+
+* Function 是惰性的评估运算, 调用时会同步地返回一个单一值.
+* Generator 是惰性的评估运算, 调用时会同步地返回零到(有可能的)无限多个值.
+* Promise 是最终可能(或可能不)返回单个值的运算.
+* Observable 是惰性的评估运算, 它可以从它被调用的时刻起同步或异步地返回零到(有可能的)无限多个值.
+
+### Observables 作为函数的泛化为多个值的函数
+
+---
+
+与流行的说法正好相反, Observables 既不像 EventEmitters, 也不像多个值的 Promises.
+在某些情况下, 即当使用 RxJS 的 Subjects 进行多播时, Observables 的行为可能会比较像 EventEmmiters, 但通常情况下 Observables 的行为并不像 EventEmitters.
+
+> Observables 像是没有参数, 但可以泛化为多个值的函数
+
+考虑如下代码:
+
+```javascript
+function foo() {
+    console.log('hello');
+    return 42;
+}
+
+var x = foo.call(); //等同于 foo()
+console.log(x);
+var y = foo.call(); //等同于 foo()
+console.log(y);
+```
+
+我们期待看到的输出:
+
+```javascript
+"hello"
+42
+"hello"
+42
+```
+
+```javascript
+var foo = Rx.Observable.create(function (observer) {
+    console.log('hello');
+    observer.next(42);
+});
+
+foo.subscribe(function (x) {
+    console.log(x);
+});
+foo.subscribe(function (y) {
+    console.log(y);
+});
+```
+
+输出是一样的:
+
+```javascript
+"hello"
+42
+"hello"
+42
+```
+
+这是因为函数和 Observables 都是惰性运算.
+如果你不调用函数, `console.log('hello')` 就不会执行.
+Observables 也是如此, 如果你不"调用"它(使用 subscribe), `console.log('hello')`也不会执行.
+此外, "调用"或"订阅"都是独立的操作:
+两个函数调用会触发两个单独的副作用, 两个 Observables 订阅同样也是触发两个单独的副作用.
+EventEmitters 共享副作用并且无论是否存在订阅者都会尽早执行, Observables 与之相反, 不会共享副作用并且是延迟执行.
+
+> 订阅 Observable 类似于调用函数.
+
+一些人声称 Observables 是异步的. 那还真不是. 如果你用日志包围一个函数调用, 像这样:
+
+```javascript
+console.log('before');
+console.log(foo.call());
+console.log('after');
+```
+
+你会看到这样的输出:
+
+```javascript
+"before"
+"hello"
+42
+"after"
+```
+
+这证明了 `foo` 的订阅完全是同步的, 就像函数一样.
+
+> Observables 传递值可以是同步的, 也可以是异步的.
+
+那么 Observable 和函数的区别是什么呢?
+**Observable 可以随着时间的推移"返回"多个值**, 这是函数说做不到的. 你无法这样:
+
+```javascript
+function foo() {
+    console.log('hello');
+    return 42;
+    return 100; //是代码, 永远不会执行
+}
+```
+
+函数只能返回一个值. 但 Observables 可以这样:
+
+```javascript
+var foo = Rx.Observable.create(function (observer) {
+    console.log('hello');
+    observer.next(42);
+    observer.next(100);
+    observer.next(250);
+    // 还可以继续返回更多的值
+});
+
+console.log('before');
+foo.subscribe(function(x) {
+    console.log(x);
+});
+console.log('after');
+```
+
+同步输出:
+
+```javascript
+"befor"
+"hello"
+42
+100
+250
+"after"
+```
+
+但你也可以异步地"返回"值:
+
+```javascript
+var foo = Rx.Observable.create(function (observer) {
+    console.log('hello');
+    observer.next(42);
+    observer.next(100);
+    observer.next(200);
+    setTimeout(() => {
+        observer.next(300); //异步执行
+    }, 1000);
+
+    console.log('before');
+    foo.subscribe(function (x) {
+        console.log(x);
+    });
+    console.log('after');
+});
+```
+
+```javascript
+"before"
+"hello"
+42
+100
+200
+"after"
+300
+```
+
+结论:
+
+* func.call() 意思是_"同步地给我一个值"_
+* observable.subscribe() 意思是_"给我任意数量的值, 无论是同步地还是异步地"_
+
+### Observable 剖析
+
+---
+
+Observables 是使用 Rx.Observable.create 或创建操作符**创建的**,
+并使用观察者来**订阅**它, 然后**执行它并发送** `next` / `error` / `complete` 通知给观察者, 而且执行可能会被**清理**.
+这四个方面全部编码在 Observables 实例中, 但某些方面是与其他类型相关的, 像 Observer (观察者) 和 Subscription (订阅).
+
+Observable 的核心关注点:
+
+* **创建** Observables
+* **订阅** Observables
+* **执行** Observables
+* **清理** Observables
+
+#### 创建 Observables
+
+Rx.Observable.create 是 Observable 构造函数的别名, 它接收一个参数:
 
 未完...
